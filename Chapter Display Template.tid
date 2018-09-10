@@ -1,0 +1,23 @@
+tags: $:/tags/ViewTemplate
+title: $:/plugins/OokTech/TiddlyLivre/Chapter Display Template
+type: text/vnd.tiddlywiki
+
+<$list
+    filter='[<currentTiddler>tag[Chapter]]'
+>
+    <h2
+        style='font-size:2em;'
+    >
+        Chapter
+        <$count
+            filter='[[dummy]][book{!!book}tag[Chapter]nsort[order]allbefore<currentTiddler>]'
+        />
+        <$view
+            field='caption'
+        >
+            <$view
+                field='title'
+            />
+        </$view>
+    </h2>
+</$list>

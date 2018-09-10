@@ -1,0 +1,12 @@
+tags: $:/tags/TopRightBar
+title: $:/plugins/OokTech/TiddlyLivre/Show Paragraph Info
+type: text/vnd.tiddlywiki
+
+<$checkbox
+    tiddler='$:/settings/TiddlyLivre'
+    field=paragraph_info
+    checked=True
+    unchecked=false
+>
+    Toggle Paragraph Info
+</$checkbox>

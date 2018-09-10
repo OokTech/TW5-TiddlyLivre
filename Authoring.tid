@@ -1,0 +1,147 @@
+title: $:/plugins/OokTech/TiddlyLivre/Authoring
+
+\define ParagraphTiddlerTitle() $(Book)$ - $(Chapter)$ - $(UniqueBit)$
+
+TODO: Add in some checks to make sure that a book and chapter are selected before entering the paragraph text
+Also use the action-increment widget to automatically set the unique bit.
+
+Select Book:
+<$select
+    tiddler='$:/temp/NewParagraph'
+    field='book'
+>
+    <option
+        value=''
+    >
+        //Add New Book//
+    </option>
+    <$list
+        filter='[tag[Book]]'
+    >
+        <option>
+            <$view
+                field='title'
+            />
+        </option>
+    </$list>
+</$select>
+<$reveal
+    type='match'
+    state='$:/temp/NewParagraph!!book'
+    text=''
+>
+    <$edit-text
+        tiddler='$:/temp/NewParagraph'
+        field='new_book'
+        placeholder='New Book Name'
+    />
+    <$button>
+        Add Book
+        <$action-setfield
+            $tiddler={{$:/temp/NewParagraph!!new_book}}
+            tags=Book
+        />
+    </$button>
+</$reveal>
+<$reveal
+    type='nomatch'
+    state='$:/temp/NewParagraph!!book'
+    text=''
+>
+    <br>
+    Select Chapter:
+    <$select
+        tiddler='$:/temp/NewParagraph'
+        field='chapter'
+    >
+        <option
+            value=''
+        >
+            //Add New Chapter//
+        </option>
+        <$list
+            filter='[book{$:/temp/NewParagraph!!book}tag[Chapter]nsort[order]]'
+        >
+            <option>
+                <$view
+                    field='caption'
+                >
+                    <$view
+                        field='title'
+                    />
+                </$view>
+            </option>
+        </$list>
+    </$select>
+    <$reveal
+        type='match'
+        state='$:/temp/NewParagraph!!chapter'
+        text=''
+    >
+        <$edit-text
+            tiddler='$:/temp/NewParagraph'
+            field='new_chapter'
+            placeholder='New Chapter Name'
+        />
+        <$button>
+            Add Chapter
+            <$list
+                filter='[{$:/temp/NewParagraph!!book}addsuffix[ - ]addsuffix{$:/temp/NewParagraph!!new_chapter}]+[limit[1]]'
+                variable=NewName
+            >
+                <$action-setfield
+                    $tiddler=<<NewName>>
+                    tags=Chapter
+                    book={{$:/temp/NewParagraph!!book}}
+                    caption={{$:/temp/NewParagraph!!new_chapter}}
+                />
+            </$list>
+        </$button>
+    </$reveal>
+    <$reveal
+        type='nomatch'
+        state='$:/temp/NewParagraph!!chapter'
+        text=''
+    >
+        <br>
+        Paragraph Contents:
+        <br>
+        Unique bit:
+        <$edit-text
+            tiddler='$:/temp/NewParagraph'
+            field=unique_bit
+        />
+
+        <$edit-text
+            tiddler='$:/temp/NewParagraph'
+            class='tc-edit-texteditor'
+        />
+
+        <$vars
+            Book={{$:/temp/NewParagraph!!book}}
+            Chapter={{$:/temp/NewParagraph!!chapter}}
+            UniqueBit={{$:/temp/NewParagraph!!unique_bit}}
+        >
+            <$list
+                filter='[{$:/temp/NewParagraph!!book}addsuffix[ - ]addsuffix{$:/temp/NewParagraph!!chapter}]+[limit[1]]'
+                variable=NewName
+            >
+                <$button>
+                    Make Paragraph
+                    <$action-setfield
+                        $tiddler=<<ParagraphTiddlerTitle>>
+                        book={{$:/temp/NewParagraph!!book}}
+                        chapter=<<NewName>>
+                        text={{$:/temp/NewParagraph!!text}}
+                        tags=Paragraph
+                    />
+                    <$action-setfield
+                        $tiddler='$:/temp/NewParagraph'
+                        text=''
+                        unique_bit=''
+                    />
+                </$button>
+            </$list>
+        </$vars>
+    </$reveal>
+</$reveal>

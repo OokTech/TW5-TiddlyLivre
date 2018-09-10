@@ -1,0 +1,9 @@
+title: $:/plugins/OokTech/TiddlyLivre/ReadMe
+
+This is a plugin that gives the framework for displaying books created in tiddlywiki.
+
+It is made up of a few view templates and stylesheets for displaying the books and some macros that are used to navigate through books.
+
+When a book is opened it is done one chapter at a time, a chapter is made up of a number of paragraphs, each paragraph is its own tiddler. A book can have any number of chapters. Once you have opened a book you can jump between chapters using the book interface at the top of the story river. You can also book mark specific paragraphs using the bookmark button that appears when you hover over a paragraph. There are two buttons, one will make the bookmark using a label in the form `BookTitle - Chapter Number - Paragraph Number` as the label, the other will let you enter a custom label.
+
+On the right the tab labelled `Bookmarks` all the bookmarks you have made are listed. You can use the tab to delete or rename bookmarks. You can also use the interface in the tab to jump to any book, chapter or paragraph in the wiki.

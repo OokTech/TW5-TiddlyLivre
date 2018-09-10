@@ -1,0 +1,118 @@
+tags: $:/tags/Macro
+title: $:/plugins/OokTech/TiddlyLivre/Book Macros
+type: text/vnd.tiddlywiki
+
+\define ChapterTitleThingy() [[$(Chapter)$]]
+\define BookTitleThingy() [[$(Book)$]]
+
+\define OpenChapter(Chapter)
+<$vars
+    Chapter="""$Chapter$"""
+>
+    <$list
+        filter="""[[$Chapter$]get[book]]"""
+        variable=Book
+    >
+        <<InnerOpenChapter>>
+        <$action-navigate
+            $to=<<Book>>
+        />
+    </$list>
+</$vars>
+\end
+
+\define InnerOpenChapter()
+<$action-setfield
+    $tiddler='$:/settings/TiddlyLivre'
+    book=<<Book>>
+/>
+<$action-setfield
+    $tiddler='$:/settings/TiddlyLivre'
+    chapter=<<Chapter>>
+/>
+<$action-setfield
+    $tiddler='$:/StoryList'
+    list=''
+/>
+<$action-listops
+    $tiddler='$:/StoryList'
+    $subfilter='+[append<BookTitleThingy>]'
+/>
+<$action-listops
+    $tiddler='$:/StoryList'
+    $subfilter='+[append<ChapterTitleThingy>]'
+/>
+<$set
+    name=ParagraphList
+    filter='[book<Book>chapter<Chapter>tag[Paragraph]nsort[order]]'
+>
+    <$action-listops
+        $tiddler='$:/StoryList'
+        $subfilter='+[append<ParagraphList>]'
+    />
+</$set>
+\end
+
+\define OpenParagraph(Paragraph)
+<$list
+    filter="""[[$Paragraph$]get[book]]"""
+    variable=Book
+>
+    <$list
+        filter="""[[$Paragraph$]get[chapter]]"""
+        variable=Chapter
+    >
+        <<InnerOpenChapter>>
+        <$action-navigate
+            $to="""$Paragraph$"""
+        />
+    </$list>
+</$list>
+\end
+
+\define OpenBook(Book)
+<$vars
+    Book="""$Book$"""
+>
+    <$list
+        filter='[book<Book>tag[Chapter]nsort[order]first[]]'
+        variable=Chapter
+    >
+        <<InnerOpenChapter>>
+    </$list>
+    <$action-navigate
+        $to="""$Book$"""
+    />
+</$vars>
+\end
+
+!Macros:
+
+Each macro can be put inside a button to open a book to a specific location
+
+!!`OpenBook`
+
+This macro opens up a book to its first chapter
+
+Usage: `<<OpenBook Book>>`
+
+|!Parameter |!Description |
+|Book |The title of the book you want to open |
+
+!!`OpenChapter`
+
+This macro opens a book to the given chapter
+
+Usage: `<<OpenChapter Chapter>>`
+
+|!Parameter |!Description |
+|Chapter |The title of the tiddler for the chapter you want to open |
+
+!!`OpenParagraph`
+
+This macro opens a book to a specific paragarph
+
+Usage: `<<OpenParagraph Paragraph>>`
+
+|!Parameter |!Description |
+|Paragraph | The title of the paragraph tiddler you want to navigate to |

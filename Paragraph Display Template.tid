@@ -1,0 +1,98 @@
+tags: $:/tags/ViewTemplate
+title: $:/plugins/OokTech/TiddlyLivre/Paragraph Display Template
+type: text/vnd.tiddlywiki
+
+<$list
+    filter='[<currentTiddler>tag[Paragraph]]'
+>
+    <$list
+        filter='[[$:/settings/TiddlyLivre]has[paragraph_info]get[paragraph_info]prefix[True]]'
+        variable=dummy
+    >
+        Book:
+        <$link
+            to={{!!book}}
+        >
+            <$view
+                tiddler={{!!book}}
+                field='caption'
+            >
+                <$view
+                    tiddler={{!!book}}
+                    field='title'
+                />
+            </$view>
+        </$link>
+        <br>
+        Chapter:
+        <$link
+            to={{!!chapter}}
+        >
+            <$view
+                tiddler={{!!chapter}}
+                field='caption'
+            />
+        </$link>
+        <br>
+        Paragraph #:
+        <$count
+            filter='[[dummy]][book{!!book}chapter{!!chapter}tag[Paragraph]nsort[order]allbefore<currentTiddler>]'
+        />
+    </$list>
+    <div
+        style='position:relative;min-height:5em;height:100%;top:5em;margin-top:-5em;'
+    >
+        <div
+            class='bookmark-buttons'
+        >
+            <$button
+                class='tc-btn-invisible'
+                tooltip='Bookmark Paragraph'
+            >
+                {{$:/core/images/link}}
+                <$action-setfield
+                    $tiddler='$:/data/Bookmarks'
+                    $index=<<currentTiddler>>
+                    $value=Bookmark
+                />
+            </$button>
+            <br>
+            <$button
+                class='tc-btn-invisible'
+                tooltip='Bookmark Paragraph (with name)'
+                popup=<<qualify bookmark>>
+            >
+                {{$:/core/images/spiral}}
+            </$button>
+            <$reveal
+                type='popup'
+                state=<<qualify bookmark>>
+                class='tc-popup-keep'
+            >
+                <div
+                    class='tc-drop-down'
+                    style='width:100%'
+                >
+                    Bookmark Name:
+                    <$edit-text
+                        tiddler='$:/temp/BookmarkName'
+                        field='bookmark_name'
+                        class='tc-edit-texteditor'
+                    />
+                    <$button>
+                        Save Bookmark
+                        <$action-setfield
+                            $tiddler='$:/data/Bookmarks'
+                            $index=<<currentTiddler>>
+                            $value={{$:/temp/BookmarkName!!bookmark_name}}
+                        />
+                        <$action-setfield
+                            $tiddler='$:/temp/BookmarkName'
+                            bookmark_name=''
+                        />
+                    </$button>
+                </div>
+            </$reveal>
+        </div>
+    </div>
+</$list>

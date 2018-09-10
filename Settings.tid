@@ -1,0 +1,13 @@
+title: $:/plugins/OokTech/TiddlyLivre/Settings
+caption: Settings
+tags: $:/tags/ControlPanel
+
+<$tiddler
+    tiddler='$:/settings/TiddlyLivre'
+>
+    Paragraph Spacing:
+    <$edit-text
+        field='paragraph_spacing'
+        class='tc-edit-texteditor'
+    />
+</$tiddler>

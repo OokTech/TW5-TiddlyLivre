@@ -1,0 +1,121 @@
+tags: $:/tags/Stylesheet
+title: $:/plugins/OokTech/TiddlyLivre/Styles
+type: text/vnd.tiddlywiki
+
+<!--
+Styling for book tiddlers
+-->
+
+.tc-tagged-Book {
+    margin:0px;
+}
+
+.tc-tagged-Book .tc-tiddler-title {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+.tc-tagged-Book .tc-subtitle {
+    display:none;
+}
+
+.tc-tagged-Book .tc-tiddler-controls {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+.tc-tagged-Book .tc-tags-wrapper {
+    display:none;
+}
+
+<!--
+Styling for chapter tiddlers
+-->
+
+.tc-tagged-Chapter {
+
+}
+
+.tc-tagged-Chapter .tc-tags-wrapper{
+    display:none;
+}
+
+.tc-tagged-Chapter .tc-subtitle {
+    display:none;
+}
+
+.tc-tagged-Chapter .tc-title {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+.tc-tagged-Chapter .tc-tiddler-controls {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+<!--
+Styling for paragraph tiddlers
+-->
+
+.tc-tagged-Paragraph {
+    margin: 0px;
+    margin-bottom: <$view tiddler='$:/settings/TiddlyLivre' field='paragraph_spacing'>28px</$view> !important;
+}
+
+.tc-tagged-Paragraph .tc-tiddler-controls {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+.tc-tagged-Paragraph .tc-tiddler-title {
+<$list
+    filter='[[$:/settings/TiddlyLivre]!edit_mode[true]]'
+>
+    display:none;
+</$list>
+}
+
+.tc-tagged-Paragraph .tc-tags-wrapper {
+    display:none;
+}
+
+.tc-tagged-Paragraph .tc-subtitle {
+    display:none;
+}
+
+.tc-tagged-Paragraph .bookmark-buttons {
+    display:block;
+    position:absolute;
+    color:white;
+    fill:white;
+    left:-30;
+    width:6em;
+    height:100%;
+    margin-left:-1.5em;
+}
+
+.tc-tagged-Paragraph .bookmark-buttons:hover {
+    color:black;
+    fill:black;
+}
+
+.tc-tagged-Paragraph .tc-tiddler-body {
+    margin:-10px;
+    margin-left:0px;
+}

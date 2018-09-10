@@ -1,0 +1,253 @@
+tags: $:/tags/SideBar
+title: $:/plugins/OokTech/TiddlyLivre/BookMarks
+caption: Bookmarks
+type: text/vnd.tiddlywiki
+
+<$tiddler
+    tiddler='Open This Tab'
+>
+Select book:
+<$select
+    tiddler='$:/settings/TiddlyLivre'
+    field='book'
+>
+    <option
+        value=''
+    >
+        --
+    </option>
+    <$list
+        filter='[tag[Book]]'
+    >
+        <option
+            value=<<currentTiddler>>
+        >
+            <$view
+                field='caption'
+            >
+                <$view
+                    field='title'
+                />
+            </$view>
+        </option>
+    </$list>
+</$select>
+<$reveal
+    type='nomatch'
+    state='$:/settings/TiddlyLivre!!book'
+    text=''
+>
+    <$button>
+        Open Book
+        <$macrocall
+            $name=OpenBook
+            Book={{$:/settings/TiddlyLivre!!book}}
+        />
+    </$button>
+    <br>
+    Select Chapter
+    <$select
+        tiddler='$:/settings/TiddlyLivre'
+        field='chapter'
+    >
+        <option
+            value=''
+        >
+            --
+        </option>
+        <$list
+            filter='[book{$:/settings/TiddlyLivre!!book}tag[Chapter]nsort[order]]'
+        >
+            <option
+                value=<<currentTiddler>>
+            >
+                <$view
+                    field='caption'
+                >
+                    <$view
+                        field='title'
+                    />
+                </$view>
+            </option>
+        </$list>
+    </$select>
+    <$reveal
+        type='nomatch'
+        state='$:/settings/TiddlyLivre!!chapter'
+        text=''
+    >
+        <$button>
+            Open Chapter
+            <$macrocall
+                $name=OpenChapter
+                Chapter={{$:/settings/TiddlyLivre!!chapter}}
+            />
+        </$button>
+        <br>
+        Select Paragraph
+        <$select
+            tiddler='$:/settings/TiddlyLivre'
+            field='paragraph'
+        >
+            <option
+                value=''
+            >
+                --
+            </option>
+            <$list
+                filter='[book{$:/settings/TiddlyLivre!!book}chapter{$:/settings/TiddlyLivre!!chapter}tag[Paragraph]nsort[order]]'
+            >
+                <option>
+                    <$view
+                        field='title'
+                    />
+                </option>
+            </$list>
+        </$select>
+        <br>
+        <$reveal
+            type='nomatch'
+            state='$:/settings/TiddlyLivre!!paragraph'
+            text=''
+        >
+            <$set
+                name=Book
+                value={{$:/settings/TiddlyLivre!!book}}
+            >
+                <$set
+                    name=Chapter
+                    value={{$:/settings/TiddlyLivre!!chapter}}
+                >
+                    <$button>
+                        Jump to paragraph
+                        <$macrocall
+                            $name=OpenParagraph
+                            Paragraph={{$:/settings/TiddlyLivre!!paragraph}}
+                        />
+                    </$button>
+                </$set>
+            </$set>
+        </$reveal>
+    </$reveal>
+</$reveal>
+</$tiddler>
+
+Bookmarks:
+
+<$list
+    filter='[[$:/data/Bookmarks]indexes[]]'
+    variable=CurrentIndex
+>
+    <$button
+        class='tc-btn-invisible'
+    >
+        {{$:/core/images/delete-button}}
+        <$action-setfield
+            $tiddler='$:/data/Bookmarks'
+            $index=<<CurrentIndex>>
+        />
+    </$button>
+    <$reveal
+        type='match'
+        state='$:/temp/TiddlyLivre/EditBookmark'
+        text=<<CurrentIndex>>
+    >
+        <$button
+            class='tc-btn-invisible'
+            tooltip='Edit Bookmark Label'
+        >
+            {{$:/core/images/edit-button}}
+            <$action-setfield
+                $tiddler='$:/temp/TiddlyLivre/EditBookmark'
+                $field=text
+                $value=''
+            />
+        </$button>
+        Bookmark Label:
+        <$edit-text
+            tiddler='$:/data/Bookmarks'
+            index=<<CurrentIndex>>
+            type="text"
+            tag="input"
+        />
+        <$button
+            class='tc-btn-invisible'
+            tooltip='Edit Bookmark Label'
+        >
+            {{$:/core/images/done-button}}
+            <$action-setfield
+                $tiddler='$:/temp/TiddlyLivre/EditBookmark'
+                $field=text
+                $value=''
+            />
+        </$button>
+        <$button
+            class='tc-btn-invisible'
+            tooltip='Edit Bookmark Label'
+        >
+            {{$:/core/images/cancel-button}}
+            <$action-setfield
+                $tiddler='$:/data/Bookmarks'
+                $index=<<CurrentIndex>>
+                $value=Bookmark
+            />
+            <$action-setfield
+                $tiddler='$:/temp/TiddlyLivre/EditBookmark'
+                $field=text
+                $value=''
+            />
+        </$button>
+    </$reveal>
+    <$reveal
+        type='nomatch'
+        state='$:/temp/TiddlyLivre/EditBookmark'
+        text=<<CurrentIndex>>
+    >
+        <$button
+            class='tc-btn-invisible'
+            tooltip='Edit Bookmark Label'
+        >
+            {{$:/core/images/edit-button}}
+            <$action-setfield
+                $tiddler='$:/temp/TiddlyLivre/EditBookmark'
+                $value=<<CurrentIndex>>
+            />
+        </$button>
+        <$button>
+            Go to
+            <$list
+                filter='[[$:/data/Bookmarks]getindex<CurrentIndex>prefix[Bookmark]suffix[Bookmark]]'
+                variable=dummy
+                emptyMessage="""<$view tiddler='$:/data/Bookmarks' index=<<CurrentIndex>>/>"""
+            >
+                <$view
+                    tiddler=<<CurrentIndex>>
+                    field=book
+                />
+                <$list
+                    variable=thisBook
+                    filter='[<CurrentIndex>get[book]]'
+                >
+                    <$list
+                        variable=thisChapter
+                        filter='[<CurrentIndex>get[chapter]]'
+                    >
+                        Ch.
+                        <$count
+                            filter='[[dummy]][book<thisBook>tag[Chapter]allbefore<thisChapter>]'
+                        />
+                        Paragraph
+                        <$count
+                            filter='[[dummy]][chapter<thisChapter>tag[Paragraph]allbefore<CurrentIndex>]'
+                        />
+                    </$list>
+                </$list>
+            </$list>
+            <$macrocall
+                $name=OpenParagraph
+                Paragraph=<<CurrentIndex>>
+            />
+        </$button>
+    </$reveal>
+    <br>
+</$list>

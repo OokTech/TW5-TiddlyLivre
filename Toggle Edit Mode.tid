@@ -1,0 +1,12 @@
+tags: $:/tags/TopRightBar
+title: $:/plugins/OokTech/TiddlyLivre/Toggle Edit Mode
+type: text/vnd.tiddlywiki
+
+<$checkbox
+    tiddler='$:/settings/TiddlyLivre'
+    field=edit_mode
+    checked=true
+    unchecked=false
+>
+    Toggle Edit Mode
+</$checkbox>
